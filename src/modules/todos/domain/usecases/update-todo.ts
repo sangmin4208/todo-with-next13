@@ -5,10 +5,7 @@ import { Todo } from '../todo-entity'
 import { UseCase } from '@/modules/core/usecase'
 import { Result } from '@/modules/core/result'
 
-export class UpdateTodo extends UseCase<
-  Result<Failure, Todo[]>,
-  Partial<Todo>
-> {
+export class UpdateTodo extends UseCase<Result<Failure, void>, Partial<Todo>> {
   private todoRepository: TodoRepository
   constructor(todoRepository?: TodoRepository) {
     super()
