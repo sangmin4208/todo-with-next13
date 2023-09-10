@@ -13,8 +13,8 @@ const NewTodoFormSubmitButton: FunctionComponent<
     <Button color='primary' type='submit' disabled={pending}>
       {pending ? (
         <>
-          Submitting...
-          <Spinner />
+          Submitting
+          <Spinner color='secondary' />
         </>
       ) : (
         'Submit'
