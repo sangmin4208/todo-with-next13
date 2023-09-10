@@ -17,7 +17,9 @@ export class TodoDatasource {
   }
 
   getTodos() {
-    return this.db.todo.findMany()
+    return this.db.todo.findMany({
+      orderBy: [{ completed: 'asc' }, { createdAt: 'desc' }],
+    })
   }
 
   updateTodo(todo: Partial<Todo>) {

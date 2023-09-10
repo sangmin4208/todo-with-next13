@@ -15,7 +15,8 @@ export class TodoRepositoryImpl implements TodoRepository {
       async () => {
         const todos = await this.datasource.getTodos()
         return todos.map(
-          (todo) => new Todo(todo.id, todo.content, todo.completed)
+          (todo) =>
+            new Todo(todo.id, todo.content, todo.completed, todo.createdAt)
         )
       },
       (error) => new Failure((error as Error).message)
