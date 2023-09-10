@@ -66,9 +66,6 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
           onClick={() =>
             remove({
               todo,
-              onSuccess: () => {
-                setIsRemoved(true)
-              },
             })
           }
           color='danger'
