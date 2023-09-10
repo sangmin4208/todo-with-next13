@@ -8,7 +8,6 @@ import { Trash2 } from 'lucide-react'
 import { useUpdateTodo } from '../hooks/use-update-todo'
 import { useRemoveTodo } from '../hooks/use-remove-todo'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
 
 interface TodoItemProps {
   todo: Todo
@@ -17,7 +16,6 @@ interface TodoItemProps {
 const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
   const { update, updating } = useUpdateTodo(todo.id)
   const { remove, removing } = useRemoveTodo(todo.id)
-  const router = useRouter()
   const [displayComplete, setDisplayComplete] = useState(todo.completed)
   const [isRemoved, setIsRemoved] = useState(false)
 

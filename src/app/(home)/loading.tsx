@@ -1,8 +1,9 @@
 import { FunctionComponent } from 'react'
+import { TodoListSkeleton } from './components/todo-list-skeleton'
 interface LoadingProps {}
 
 const Loading: FunctionComponent<LoadingProps> = ({}) => {
-  return <main>Loading...</main>
+  return <TodoListSkeleton />
 }
 
 export default Loading

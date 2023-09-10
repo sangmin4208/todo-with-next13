@@ -10,6 +10,7 @@ const TodosPage: FunctionComponent<TodosPageProps> = async ({}) => {
   if (isLeft(result)) {
     return <div>Error</div>
   }
+
   const todos = await result.right
   return (
     <main className='p-2'>
