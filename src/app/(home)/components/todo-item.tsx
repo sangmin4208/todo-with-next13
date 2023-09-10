@@ -20,13 +20,9 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
   const { remove, removing } = useRemoveTodo(todo.id)
   const router = useRouter()
   const [displayComplete, setDisplayComplete] = useState(todo.completed)
-  const [isRemoved, setIsRemoved] = useState(false)
 
   const isDisabled = updating || removing
 
-  if (isRemoved) {
-    return null
-  }
   return (
     <Card
       className={cn({
@@ -66,6 +62,9 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
           onClick={() =>
             remove({
               todo,
+              onSuccess: () => {
+                router.refresh()
+              },
             })
           }
           color='danger'
