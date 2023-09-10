@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { FunctionComponent, Suspense } from 'react'
 import { TodoList } from './components/todo-list'
 import { GetTodos } from '@/modules/todos/domain/usecases/get-todos'
