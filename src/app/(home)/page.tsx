@@ -10,7 +10,7 @@ interface TodosPageProps {}
 const TodosPage: FunctionComponent<TodosPageProps> = async ({}) => {
   const result = await new GetTodos().execute()
   if (isLeft(result)) {
-    return <div>Error</div>
+    return <div>{result.left.message}</div>
   }
 
   const todos = await result.right

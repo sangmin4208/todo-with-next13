@@ -18,7 +18,6 @@ export const GET = async (
 }
 export const DELETE = async (req: Request) => {
   const { id } = await req.json()
-  console.log('DELETE', id)
   const result = await new DeleteTodo().execute(id)
   if (isLeft(result)) {
     return new Response(

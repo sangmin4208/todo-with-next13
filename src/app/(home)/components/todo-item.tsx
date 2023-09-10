@@ -10,6 +10,7 @@ import { useRemoveTodo } from '../hooks/use-remove-todo'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import moment from 'moment'
+import { useToast } from '@/components/ui/use-toast'
 
 interface TodoItemProps {
   todo: Todo
@@ -18,6 +19,7 @@ interface TodoItemProps {
 const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
   const { update, updating } = useUpdateTodo(todo.id)
   const { remove, removing } = useRemoveTodo(todo.id)
+  const { toast } = useToast()
   const router = useRouter()
   const [displayComplete, setDisplayComplete] = useState(todo.completed)
 
@@ -44,6 +46,10 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
                 },
                 onError: () => {
                   setDisplayComplete(!value)
+                  toast({
+                    variant: 'destructive',
+                    title: '생성 실패',
+                  })
                 },
               })
               setDisplayComplete(value)
@@ -64,6 +70,12 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
               todo,
               onSuccess: () => {
                 router.refresh()
+              },
+              onError() {
+                toast({
+                  variant: 'destructive',
+                  title: '삭제 실패',
+                })
               },
             })
           }

@@ -10,11 +10,10 @@ export const addTodoAction = async (data: FormData) => {
   if (!content || typeof content !== 'string') {
     return
   }
-  const result = new AddTodo().execute(content)
+  const result = await new AddTodo().execute(content)
   if (isLeft(result)) {
-    throw new Error('Todo 추가에 실패했습니다.')
+    throw new Error(result.left.message)
   }
 
-  await result.right
   revalidatePath('/todos')
 }
