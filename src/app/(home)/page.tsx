@@ -4,6 +4,8 @@ import { FunctionComponent, Suspense } from 'react'
 import { TodoList } from './components/todo-list'
 import { isLeft } from 'fp-ts/lib/Either'
 import { todoFacade } from '@/modules/facades/todo-facade'
+import { UpdateTodoModal } from './components/update-todo-modal'
+import { TodoUpdateModalProvider } from './hooks/use-todo-update-modal-context'
 
 interface TodosPageProps {}
 
@@ -15,9 +17,12 @@ const TodosPage: FunctionComponent<TodosPageProps> = async ({}) => {
 
   const todos = await result.right
   return (
-    <main className='p-2'>
-      <TodoList todos={todos} />
-    </main>
+    <TodoUpdateModalProvider>
+      <main className='p-2'>
+        <UpdateTodoModal />
+        <TodoList todos={todos} />
+      </main>
+    </TodoUpdateModalProvider>
   )
 }
 

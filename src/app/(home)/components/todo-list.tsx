@@ -1,7 +1,8 @@
-import { FunctionComponent, PropsWithChildren } from 'react'
+import { FunctionComponent } from 'react'
 import { TodoItem } from './todo-item'
+import { Todo } from '@/modules/domain/entities/todo'
 interface TodoListProps {
-  todos: any[]
+  todos: Todo[]
 }
 
 const TodoList: FunctionComponent<TodoListProps> = ({ todos }) => {

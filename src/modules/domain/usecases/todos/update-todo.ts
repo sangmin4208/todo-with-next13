@@ -4,7 +4,10 @@ import { Todo } from '@/domain/entities/todo'
 import { UseCase } from '@/modules/core/usecase'
 import { Result } from '@/modules/core/result'
 
-export interface UpdateTodoParams extends Partial<Todo> {}
+export interface UpdateTodoParams {
+  id: string
+  todo: Partial<Todo>
+}
 export class UpdateTodo extends UseCase<
   Result<Failure, void>,
   UpdateTodoParams

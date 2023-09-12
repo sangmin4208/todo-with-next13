@@ -38,7 +38,8 @@ export class TodoRepositoryImpl implements TodoRepository {
   async update(params: UpdateTodoParams) {
     try {
       await this.datasource.updateTodo({
-        ...params,
+        ...params.todo,
+        id: params.id,
       })
       return right(undefined)
     } catch (error) {

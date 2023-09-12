@@ -27,9 +27,10 @@ export const PATCH = async (req: Request) => {
 
   const result = await todoFacade.updateTodo({
     id,
-    completed,
+    todo: { completed },
   })
   if (isLeft(result)) {
+    console.log(result.left.message)
     return new Response(
       JSON.stringify({
         message: '업데이트에 실패했습니다.',

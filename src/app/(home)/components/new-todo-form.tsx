@@ -1,8 +1,8 @@
 'use client'
 import { FunctionComponent, PropsWithChildren, useRef } from 'react'
 import { addTodoAction } from '../actions/add-todo'
-import { NewTodoFormSubmitButton } from './new-todo-form-submit-button'
 import { Input } from '@nextui-org/react'
+import { FormSubmitButton } from './form-submit-button'
 
 interface NewTodoFormProps extends PropsWithChildren {}
 
@@ -24,7 +24,7 @@ const NewTodoForm: FunctionComponent<NewTodoFormProps> = ({}) => {
           name='content'
           id='content'
         />
-        <NewTodoFormSubmitButton />
+        <FormSubmitButton />
       </form>
     </div>
   )

@@ -1,26 +1,30 @@
 'use client'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import { FunctionComponent } from 'react'
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 import { Button, Spinner } from '@nextui-org/react'
 
-interface NewTodoFormSubmitButtonProps extends PropsWithChildren {}
+interface FormSubmitButtonProps {
+  label?: string
+  pendingLabel?: string
+}
 
-const NewTodoFormSubmitButton: FunctionComponent<
-  NewTodoFormSubmitButtonProps
-> = ({}) => {
+const FormSubmitButton: FunctionComponent<FormSubmitButtonProps> = ({
+  label = 'Submit',
+  pendingLabel = 'Submitting',
+}) => {
   const { pending } = useFormStatus()
   return (
     <Button color='primary' type='submit' disabled={pending}>
       {pending ? (
         <>
-          Submitting
+          {pendingLabel}
           <Spinner color='secondary' />
         </>
       ) : (
-        'Submit'
+        label
       )}
     </Button>
   )
 }
 
-export { NewTodoFormSubmitButton }
+export { FormSubmitButton }

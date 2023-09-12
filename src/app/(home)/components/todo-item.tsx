@@ -4,13 +4,14 @@ import { Todo } from '@/modules/domain/entities/todo'
 import { FunctionComponent, useState } from 'react'
 
 import { Button, Card, CardBody, Checkbox } from '@nextui-org/react'
-import { Trash2 } from 'lucide-react'
+import { PencilIcon, Trash2 } from 'lucide-react'
 import { useUpdateTodo } from '../hooks/use-update-todo'
 import { useRemoveTodo } from '../hooks/use-remove-todo'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import moment from 'moment'
 import { useToast } from '@/components/ui/use-toast'
+import { useTodoUpdateModalContext } from '../hooks/use-todo-update-modal-context'
 
 interface TodoItemProps {
   todo: Todo
@@ -19,11 +20,50 @@ interface TodoItemProps {
 const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
   const { update, updating } = useUpdateTodo(todo.id)
   const { remove, removing } = useRemoveTodo(todo.id)
+  const { openModal } = useTodoUpdateModalContext()
   const { toast } = useToast()
   const router = useRouter()
   const [displayComplete, setDisplayComplete] = useState(todo.completed)
 
   const isDisabled = updating || removing
+
+  const handleUpdateModalOpen = () => {
+    openModal(todo)
+  }
+
+  const handleDelete = () => {
+    remove({
+      todo,
+      onSuccess: () => {
+        router.refresh()
+      },
+      onError() {
+        toast({
+          variant: 'destructive',
+          title: '삭제 실패',
+        })
+      },
+    })
+  }
+  const handleUpdate = (value: boolean) => {
+    update({
+      todo: {
+        ...todo,
+        completed: value,
+      },
+      onSuccess: () => {
+        router.refresh()
+      },
+      onError: () => {
+        setDisplayComplete(!value)
+        toast({
+          variant: 'destructive',
+          title: '업데이트 실패',
+        })
+      },
+    })
+    setDisplayComplete(value)
+  }
 
   return (
     <Card
@@ -35,25 +75,7 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
         <div>
           <Checkbox
             isDisabled={isDisabled}
-            onValueChange={(value) => {
-              update({
-                todo: {
-                  ...todo,
-                  completed: value,
-                },
-                onSuccess: () => {
-                  router.refresh()
-                },
-                onError: () => {
-                  setDisplayComplete(!value)
-                  toast({
-                    variant: 'destructive',
-                    title: '생성 실패',
-                  })
-                },
-              })
-              setDisplayComplete(value)
-            }}
+            onValueChange={handleUpdate}
             isSelected={displayComplete}
             lineThrough
           >
@@ -63,27 +85,24 @@ const TodoItem: FunctionComponent<TodoItemProps> = ({ todo }) => {
             {moment(todo.createdAt).format('YY.MM.DD, HH:mm:ss')}
           </p>
         </div>
-        <Button
-          isDisabled={isDisabled}
-          onClick={() =>
-            remove({
-              todo,
-              onSuccess: () => {
-                router.refresh()
-              },
-              onError() {
-                toast({
-                  variant: 'destructive',
-                  title: '삭제 실패',
-                })
-              },
-            })
-          }
-          color='danger'
-          isIconOnly
-        >
-          <Trash2 />
-        </Button>
+        <section className='flex gap-1'>
+          <Button
+            isDisabled={isDisabled}
+            onClick={handleUpdateModalOpen}
+            color='danger'
+            isIconOnly
+          >
+            <PencilIcon />
+          </Button>
+          <Button
+            isDisabled={isDisabled}
+            onClick={handleDelete}
+            color='danger'
+            isIconOnly
+          >
+            <Trash2 />
+          </Button>
+        </section>
       </CardBody>
     </Card>
   )
