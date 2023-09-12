@@ -5,10 +5,7 @@ import {
   DeleteTodoParams,
 } from '@/domain/usecases/todos/delete-todo'
 import { GetTodos, GetTodosParams } from '@/domain/usecases/todos/get-todos'
-import {
-  UpdateTodo,
-  UpdateTodoParams,
-} from '@/domain/usecases/todos/update-todo'
+import { UpdateTodo } from '@/domain/usecases/todos/update-todo'
 import { TodoRepositoryImpl } from '@/data/todos/todo-repository-impl'
 
 class TodoFacade {
@@ -29,8 +26,29 @@ class TodoFacade {
     return new DeleteTodo(this.repo).execute(params)
   }
 
-  async updateTodo(params: UpdateTodoParams) {
-    return new UpdateTodo(this.repo).execute(params)
+  async updateTodoContent(id: string, content: string) {
+    return new UpdateTodo(this.repo).execute({
+      id,
+      todo: { content },
+    })
+  }
+
+  async completeTodo(id: string) {
+    return new UpdateTodo(this.repo).execute({
+      id,
+      todo: {
+        completed: true,
+      },
+    })
+  }
+
+  async uncompleteTodo(id: string) {
+    return new UpdateTodo(this.repo).execute({
+      id,
+      todo: {
+        completed: false,
+      },
+    })
   }
 }
 

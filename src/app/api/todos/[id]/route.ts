@@ -25,10 +25,11 @@ export const DELETE = async (req: Request) => {
 export const PATCH = async (req: Request) => {
   const { id, completed } = await req.json()
 
-  const result = await todoFacade.updateTodo({
-    id,
-    todo: { completed },
-  })
+  const fn = completed
+    ? todoFacade.completeTodo.bind(todoFacade)
+    : todoFacade.uncompleteTodo.bind(todoFacade)
+
+  const result = await fn(id)
   if (isLeft(result)) {
     console.log(result.left.message)
     return new Response(
