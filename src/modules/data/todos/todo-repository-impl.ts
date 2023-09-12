@@ -1,6 +1,5 @@
 import { Failure } from '@/modules/core/failure'
 import { Result } from '@/modules/core/result'
-import { Todo } from '@/domain/entities/todo'
 import { TodoRepository } from '@/domain/repositories/todo-repository'
 import { TodoDatasource } from '@/data/todos/todo-datasource'
 import { left, right } from 'fp-ts/lib/Either'
@@ -16,11 +15,7 @@ export class TodoRepositoryImpl implements TodoRepository {
   async getAll() {
     try {
       const todos = await this.datasource.getTodos()
-      const result = todos.map(
-        (todo) =>
-          new Todo(todo.id, todo.content, todo.completed, todo.createdAt)
-      )
-      return right(result)
+      return right(todos)
     } catch (error) {
       return left(new Failure((error as Error).message))
     }
