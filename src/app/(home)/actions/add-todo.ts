@@ -5,11 +5,8 @@ import { isLeft } from 'fp-ts/lib/Either'
 import { revalidatePath } from 'next/cache'
 import { todoFacade } from '@/modules/facades/todo-facade'
 
-export const addTodoAction = async (data: FormData) => {
-  const content = data.get('content')
-  if (!content || typeof content !== 'string') {
-    return
-  }
+export const addTodoAction = async (content: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   const result = await todoFacade.addTodo({
     content,
   })

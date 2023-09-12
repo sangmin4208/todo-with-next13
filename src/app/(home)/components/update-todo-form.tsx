@@ -1,34 +1,66 @@
 'use client'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useEffect } from 'react'
 import { useTodoUpdateModalContext } from '../hooks/use-todo-update-modal-context'
 import { Input } from '@nextui-org/react'
-import { FormSubmitButton } from './form-submit-button'
 import { updateTodoContentAction } from '../actions/update-todo-content'
+import { useTodoForm } from '../hooks/use-todo-form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
+import { FormSubmitButton } from './form-submit-button'
 interface UpdateTodoFormProps {}
 
 const UpdateTodoForm: FunctionComponent<UpdateTodoFormProps> = () => {
   const { todo, setOpen } = useTodoUpdateModalContext()
-  const handleSubmit = async (formData: FormData) => {
-    await updateTodoContentAction(formData)
+  const { form } = useTodoForm()
+
+  useEffect(() => {
+    if (!todo) return
+    form.setValue('content', todo.content)
+  }, [todo]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    if (!todo) return
+    await updateTodoContentAction(todo?.id, data.content)
     setOpen(false)
-  }
+    form.reset()
+  })
+  const isSubmitting = form.formState?.isSubmitting
   return (
     <>
-      <div className='flex flex-col gap-2'>
-        <form action={handleSubmit} className='flex flex-col gap-4 py-4'>
-          <input type='hidden' name='id' defaultValue={todo?.id} />
-          <Input
-            labelPlacement='outside'
-            label='content'
-            type='text'
-            name='content'
-            defaultValue={todo?.content}
+      <Form {...form}>
+        <form
+          className='flex flex-col gap-4 w-full pt-2 pb-4'
+          onSubmit={onSubmit}
+        >
+          <FormField
+            control={form.control}
+            name={'content'}
+            render={(field) => {
+              return (
+                <FormItem className='w-full'>
+                  <FormControl>
+                    <Input
+                      value={field.field.value}
+                      onValueChange={(value) => {
+                        field.field.onChange(value)
+                      }}
+                      type='text'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
           />
-          <div className='w-full flex justify-end'>
-            <FormSubmitButton label='Update' pendingLabel='Updating' />
-          </div>
+
+          <FormSubmitButton isSubmitting={isSubmitting} />
         </form>
-      </div>
+      </Form>
     </>
   )
 }
