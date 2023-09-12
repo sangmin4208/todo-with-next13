@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import db from '@/lib/db'
-import { Todo } from '../domain/todo-entity'
+import { Todo } from '@/domain/entities/todo'
 
 export class TodoDatasource {
   private db: PrismaClient

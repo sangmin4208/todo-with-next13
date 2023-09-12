@@ -1,4 +1,4 @@
-import { Todo } from '@/modules/todos/domain/todo-entity'
+import { Todo } from '@/modules/domain/entities/todo'
 import useSWRMutation from 'swr/mutation'
 const fetcher = async (
   url: string,

@@ -1,9 +1,12 @@
 import { Failure } from '@/modules/core/failure'
 import { Result } from '@/modules/core/result'
-import { Todo } from '../domain/todo-entity'
-import { TodoRepository } from '../domain/todo-repository'
-import { TodoDatasource } from './todo-datasource'
+import { Todo } from '@/domain/entities/todo'
+import { TodoRepository } from '@/domain/repositories/todo-repository'
+import { TodoDatasource } from '@/data/todos/todo-datasource'
 import { left, right } from 'fp-ts/lib/Either'
+import { AddTodoParams } from '@/modules/domain/usecases/todos/add-todo'
+import { UpdateTodoParams } from '@/modules/domain/usecases/todos/update-todo'
+import { DeleteTodoParams } from '@/modules/domain/usecases/todos/delete-todo'
 
 export class TodoRepositoryImpl implements TodoRepository {
   private datasource: TodoDatasource
@@ -23,21 +26,19 @@ export class TodoRepositoryImpl implements TodoRepository {
     }
   }
 
-  async create(content: string): Result<Failure, void> {
+  async create(params: AddTodoParams): Result<Failure, void> {
     try {
-      await this.datasource.createTodo(content)
+      await this.datasource.createTodo(params.content)
       return right(undefined)
     } catch (error) {
       return left(new Failure((error as Error).message))
     }
   }
 
-  async update(todo: Partial<Todo>) {
+  async update(params: UpdateTodoParams) {
     try {
       await this.datasource.updateTodo({
-        id: todo.id,
-        content: todo.content,
-        completed: todo.completed,
+        ...params,
       })
       return right(undefined)
     } catch (error) {
@@ -45,7 +46,7 @@ export class TodoRepositoryImpl implements TodoRepository {
     }
   }
 
-  async delete(id: string) {
+  async delete({ id }: DeleteTodoParams) {
     try {
       await this.datasource.deleteTodo(id)
       return right(undefined)

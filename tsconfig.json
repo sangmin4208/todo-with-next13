@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/core/*": ["./src/modules/core/*"],
-      "@/todo-module/*": ["./src/modules/todos/*"]
+      "@/domain/*": ["./src/modules/domain/*"],
+      "@/data/*": ["./src/modules/data/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

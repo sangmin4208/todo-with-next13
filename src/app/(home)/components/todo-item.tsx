@@ -1,6 +1,6 @@
 'use client'
 
-import { Todo } from '@/modules/todos/domain/todo-entity'
+import { Todo } from '@/modules/domain/entities/todo'
 import { FunctionComponent, useState } from 'react'
 
 import { Button, Card, CardBody, Checkbox } from '@nextui-org/react'
